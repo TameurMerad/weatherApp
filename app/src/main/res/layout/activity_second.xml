@@ -4,34 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/weather_background"
     tools:context=".secondActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBarID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:background="@drawable/weather_background"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/scrollViewId"
+        >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="15dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="15dp">
+
             <ImageView
                 android:id="@+id/backBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back_icon"
-                android:layout_marginStart="5dp"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="15dp"
                 android:layout_gravity="start"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="25dp"
+                android:src="@drawable/back_icon"
                 app:tint="@color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="2dp"
                 android:background="@drawable/second_background"
                 android:orientation="vertical"
-                android:layout_margin="2dp"
                 android:padding="20dp">
 
                 <LinearLayout
@@ -202,9 +218,8 @@
                 android:id="@+id/forcastRecyclerV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="true"
-                android:layout_marginTop="20dp"/>
-
+                android:layout_marginTop="20dp"
+                android:nestedScrollingEnabled="true" />
 
 
         </LinearLayout>

@@ -3,7 +3,10 @@ package com.example.uiapptest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +35,8 @@ class secondActivity : AppCompatActivity() {
         val windSpeed = findViewById<TextView>(R.id.wind_speed)
         val rain = findViewById<TextView>(R.id.rain)
         val humidity = findViewById<TextView>(R.id.humidity)
-
+        val scrollview = findViewById<ScrollView>(R.id.scrollViewId)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBarID)
         val search = intent.getStringExtra("searchName")
 
         backBtn.setOnClickListener{
@@ -41,6 +45,11 @@ class secondActivity : AppCompatActivity() {
 
 
         GlobalScope.launch(Dispatchers.IO){
+            runOnUiThread {
+                scrollview.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+            }
+
             val response = try {
                 ApiInstance.api.getWeather(search!!, 3)
             } catch (e: Exception) {
@@ -57,13 +66,13 @@ class secondActivity : AppCompatActivity() {
                     Picasso.get()
                         .load("https:" + forcast.forecast.forecastday[1].day.condition.icon)
                         .into(imageIcon)
-
+                    progressBar.visibility = View.GONE
+                    scrollview.visibility = View.VISIBLE
                     degree.text = tommorow.day.avgtemp_c.toInt().toString() + "°"
                     condition.text = tommorow.day.condition.text
                     windSpeed.text = tommorow.day.maxwind_kph.toString() +"km/h"
                     humidity.text = tommorow.day.avghumidity.toString()+"%"
                     rain.text = tommorow.day.daily_chance_of_rain.toString()+"%"
-
                     buildRecyclerView(forcast.forecast.forecastday)
 
                 }

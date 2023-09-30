@@ -1,13 +1,18 @@
 package com.example.uiapptest
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,8 +51,9 @@ class MainActivity : AppCompatActivity() {
         val windSpeed = findViewById<TextView>(R.id.wind_speed)
         val rain = findViewById<TextView>(R.id.rain)
         val humidity = findViewById<TextView>(R.id.humidity)
-
-
+        val scrollView = findViewById<ScrollView>(R.id.myScrollView)
+        val progressBar = findViewById<ProgressBar>(R.id.myProgressbar)
+        val welcomeText = findViewById<TextView>(R.id.myWelcomeText)
 
 
 
@@ -68,7 +74,14 @@ class MainActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
             ) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(input.windowToken, 0)
+
                 GlobalScope.launch(Dispatchers.IO) {
+                    runOnUiThread {
+                        welcomeText.visibility = View.GONE
+                        progressBar.visibility = View.VISIBLE
+                    }
 
                     val response = try {
                         ApiInstance.api.getWeather(input.text.toString(), 3)
@@ -91,6 +104,10 @@ class MainActivity : AppCompatActivity() {
                             humidity.text = forecast.current.humidity.toInt().toString() + "%"
                             rain.text = forecast.current.precip_mm.toString() + "%"
                             dateTxt.text = "$day $month  | ${forecast.location.localtime.takeLast(5)}"
+
+                            progressBar.visibility = View.GONE
+                            scrollView.visibility = View.VISIBLE
+
                             buildRecyclerView(forecast.forecast.forecastday[0].hour)
                             Log.d("nmi image", "${uriImg}")
                             Picasso.get()
