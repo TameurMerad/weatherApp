@@ -40,6 +40,8 @@
                 android:id="@+id/textInputId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
                 android:hint="place" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -207,6 +209,7 @@
                         android:textColor="#FFC107"
                         />
                     <TextView
+                        android:id="@+id/lastThreeDays"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"

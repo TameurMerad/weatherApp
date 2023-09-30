@@ -1,5 +1,6 @@
 package com.example.uiapptest
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val nextThreeDays = findViewById<TextView>(R.id.lastThreeDays)
         val input = findViewById<EditText>(R.id.textInputId)
         val time = LocalTime.now()
         val today = LocalDate.now()
@@ -44,6 +46,22 @@ class MainActivity : AppCompatActivity() {
         val windSpeed = findViewById<TextView>(R.id.wind_speed)
         val rain = findViewById<TextView>(R.id.rain)
         val humidity = findViewById<TextView>(R.id.humidity)
+
+
+
+
+
+
+        nextThreeDays.setOnClickListener {
+            startActivity(Intent(this,secondActivity::class.java))
+
+        }
+
+
+
+
+
+
 
 
         input.setOnEditorActionListener { _, actionId, event ->
@@ -64,8 +82,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     if (response.isSuccessful) {
                         runOnUiThread {
-
-
                             val forecast = response.body()!!
                             val uriImg = "https:" + forecast.current.condition.icon
                             conditionTxt.text = forecast.current.condition.text.toString()
@@ -74,16 +90,24 @@ class MainActivity : AppCompatActivity() {
                             windSpeed.text = "${forecast.current.wind_kph}km/h"
                             humidity.text = forecast.current.humidity.toInt().toString() + "%"
                             rain.text = forecast.current.precip_mm.toString() + "%"
-                            dateTxt.text = "$day $month  | $timeCurrent"
+                            dateTxt.text = "$day $month  | ${forecast.location.localtime.takeLast(5)}"
                             buildRecyclerView(forecast.forecast.forecastday[0].hour)
                             Log.d("nmi image", "${uriImg}")
                             Picasso.get()
                                 .load(uriImg)
                                 .into(conditionImg)
 
+                            nextThreeDays.setOnClickListener {
+                                val intent = Intent(this@MainActivity,secondActivity::class.java)
+                                intent.putExtra("searchName",forecast.location.name)
+                                startActivity(intent)
 
+
+                            }
                         }
                     }
+
+
 
                 }
 
