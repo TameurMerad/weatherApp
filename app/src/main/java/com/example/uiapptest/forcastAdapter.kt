@@ -46,7 +46,7 @@ class forcastAdapter(val forcastList: List<Forecastday>):RecyclerView.Adapter<fo
 
             day.text = dayName
             condition.text = forcast.day.condition.text
-            maxAndmin.text = "${forcast.day.maxtemp_c}  ${forcast.day.mintemp_c}"
+            maxAndmin.text = "${forcast.day.maxtemp_c}°  ${forcast.day.mintemp_c}°"
 
         }
     }
