@@ -89,7 +89,6 @@ class MainActivity : AppCompatActivity() {
                         runOnUiThread {
                             Toast.makeText(applicationContext, "${e.message}", Toast.LENGTH_LONG).show()
                         }
-//                    text.append(e.message)
                         Log.d("nmi", "${e.message} ")
                         return@launch
                     }
